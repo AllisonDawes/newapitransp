@@ -17,12 +17,14 @@ class SessionController {
       return res.status(401).json({ error: "Senha incorreta!" });
     }
 
-    const { id } = user;
+    const { id, driver, adm } = user;
 
     return res.json({
       user: {
         id,
-        username
+        username,
+        driver,
+        adm
       },
       token: jwt.sign({ id }, authConfig.secret, {
         expiresIn: authConfig.expiresIn

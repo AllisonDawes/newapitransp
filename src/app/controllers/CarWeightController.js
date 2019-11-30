@@ -51,8 +51,7 @@ class CarWeight {
 
     if (!checkUser.driver) {
       return res.status(401).json({
-        error:
-          "Este usuário não foi identificado como motorista, portanto não pode atualizar pesagem!"
+        error: "Usuário não autorizado! Procure o administraidor"
       });
     }
 

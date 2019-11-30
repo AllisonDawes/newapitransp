@@ -6,8 +6,9 @@ import databaseConfig from "../config/database";
 
 import CarWeight from "../app/models/CarWeight";
 import Transfer from "../app/models/Transfer";
+import Programation from "../app/models/Programation";
 
-const models = [User, CarWeight, Transfer];
+const models = [User, CarWeight, Transfer, Programation];
 
 class Database {
   constructor() {

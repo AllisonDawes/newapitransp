@@ -1,3 +1,4 @@
+import * as Yup from "yup";
 import User from "../models/User";
 
 class UserController {
@@ -21,7 +22,26 @@ class UserController {
     return res.json(userList);
   }
 
+  async show(req, res) {
+    const user = await User.findByPk(req.params.id);
+
+    return res.json(user);
+  }
+
   async store(req, res) {
+    const schema = Yup.object().shape({
+      username: Yup.string().required(),
+      password: Yup.string()
+        .required()
+        .min(6)
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res
+        .status(400)
+        .json({ error: "As validações de cadastro falharam." });
+    }
+
     const userExists = await User.findOne({
       where: { username: req.body.username }
     });
@@ -43,6 +63,20 @@ class UserController {
   }
 
   async update(req, res) {
+    const schema = Yup.object().shape({
+      username: Yup.string().min(3),
+      oldPassword: Yup.string().min(6),
+      password: Yup.string()
+        .min(6)
+        .when("oldPassword", (oldPassword, field) =>
+          oldPassword ? field.required() : field
+        )
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: "Validation fails" });
+    }
+
     const { username, oldPassword } = req.body;
 
     const user = await User.findByPk(req.userId);
@@ -61,6 +95,10 @@ class UserController {
 
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
       return res.status(401).json({ error: "Senha não corresponde!" });
+    }
+
+    if (user.driver === false) {
+      return res.status(401).json({ error: "Usuário não tem autorização!" });
     }
 
     const { id, driver, adm } = await user.update(req.body);
