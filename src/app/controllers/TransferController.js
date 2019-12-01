@@ -54,6 +54,14 @@ class Transfer {
 
     const carweight = await CarWeightModel.findByPk(1);
 
+    if (!carweight) {
+      return res
+        .status(401)
+        .json({
+          erro: "Cadastre antes o caminhão e o peso do mesmo para continuar!"
+        });
+    }
+
     const transfer = await TransferModel.create({
       user_id: req.userId,
       carweight_id: carweight.id,
