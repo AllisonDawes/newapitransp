@@ -22,7 +22,7 @@ class Programation {
 
     const checkUser = await User.findByPk(req.userId);
 
-    if (!checkUser.driver) {
+    if (!checkUser.adm) {
       return res.status(401).json({ error: "Usuário não autorizado" });
     }
 
