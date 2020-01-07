@@ -18,6 +18,11 @@ module.exports = {
         allowNull: true
       },
 
+      date: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+
       carweight_id: {
         type: Sequelize.INTEGER,
         references: { model: "car_weights", key: "id" },
@@ -67,3 +72,25 @@ module.exports = {
     return queryInterface.dropTable("transfers");
   }
 };
+
+/**
+ * COMANDOS SEQUELIZE:
+ *
+ * (instalar o sequelize)
+ * yarn add sequelize
+ *
+ * (instalar a linha de comandos do sequelize como depedência de desenvolvimento)
+ * yarn add sequelize-cli -D
+ *
+ * (criar um arquivo de migration na pasta database/migrations)
+ * yarn sequelize migration:create --name=create-users
+ *
+ * (cria as tabelas na base de dados)
+ * yarn sequelize db:migrate
+ *
+ * (desfaz uma tabela que tenha sido criada por ultimo)
+ * yarn sequelize db:migrate:undo
+ *
+ * (desfaz todas as tabelas criadas na base de dados)
+ * yarn sequelize db:migrate:undo:all
+ */

@@ -1,6 +1,7 @@
 import TransferModel from "../models/Transfer";
 import User from "../models/User";
 import CarWeightModel from "../models/CarWeight";
+import { startOfDay } from "date-fns";
 
 class Transfer {
   async index(req, res) {
@@ -184,6 +185,8 @@ class Transfer {
   async store(req, res) {
     const { mat_type, mat_origin, mat_dest, weight, comments } = req.body;
 
+    const startDay = startOfDay(new Date());
+
     const checkUser = await User.findByPk(req.userId);
 
     if (!checkUser.driver) {
@@ -203,6 +206,7 @@ class Transfer {
     const transfer = await TransferModel.create({
       user_id: req.userId,
       carweight_id: carweight.id,
+      date: startDay,
       mat_type,
       mat_origin,
       mat_dest,
