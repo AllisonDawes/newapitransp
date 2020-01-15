@@ -32,6 +32,5 @@ routes.get("/transfers", TransferController.index);
 routes.post("/transfers", TransferController.store);
 
 routes.get("/sumtransfers", SumTransfers.index);
-//routes.post("/sumtransfers", SumTransfers.store);
 
 export default routes;
