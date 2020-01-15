@@ -2,6 +2,7 @@ import TransferModel from "../models/Transfer";
 import User from "../models/User";
 import CarWeightModel from "../models/CarWeight";
 import { startOfDay } from "date-fns";
+import { zonedTimeToUtc } from "date-fns-tz";
 
 class Transfer {
   async index(req, res) {
@@ -9,7 +10,7 @@ class Transfer {
     const { type_filter, filter } = req.body;
 
     if (filter == null) {
-      const transferList = await TransferModel.findAll({
+      const transferList = await TransferModel.findAndCountAll({
         attributes: [
           "id",
           "user_id",
@@ -42,7 +43,7 @@ class Transfer {
     }
 
     if (type_filter == "tipo de material") {
-      const transferList = await TransferModel.findAll({
+      const transferList = await TransferModel.findAndCountAll({
         where: { mat_type: filter },
         attributes: [
           "id",
@@ -77,7 +78,7 @@ class Transfer {
     }
 
     if (type_filter == "origem do material") {
-      const transferList = await TransferModel.findAll({
+      const transferList = await TransferModel.findAndCountAll({
         where: { mat_origin: filter },
         attributes: [
           "id",
@@ -112,7 +113,7 @@ class Transfer {
     }
 
     if (type_filter == "destino do material") {
-      const transferList = await TransferModel.findAll({
+      const transferList = await TransferModel.findAndCountAll({
         where: { mat_dest: filter },
         attributes: [
           "id",
@@ -147,7 +148,7 @@ class Transfer {
     }
 
     if (type_filter == "criacao do registro") {
-      const transferList = await TransferModel.findAll({
+      const transferList = await TransferModel.findAndCountAll({
         where: { created_at: filter },
         attributes: [
           "id",
@@ -185,7 +186,9 @@ class Transfer {
   async store(req, res) {
     const { mat_type, mat_origin, mat_dest, weight, comments } = req.body;
 
-    const startDay = startOfDay(new Date());
+    const tzStartDay = zonedTimeToUtc(new Date(), "Antarctica/Mawson");
+
+    const startDay = startOfDay(tzStartDay);
 
     const checkUser = await User.findByPk(req.userId);
 

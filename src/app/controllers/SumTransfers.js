@@ -1,5 +1,6 @@
 import TransferModel from "../models/Transfer";
-import { startOfDay } from "date-fns";
+import { startOfToday, startOfDay } from "date-fns";
+import { zonedTimeToUtc } from "date-fns-tz";
 
 class SumTransfers {
   async index(req, res) {
@@ -18,6 +19,20 @@ class SumTransfers {
 
     return res.json(total);
   }
+
+  /*async store(req, res) {
+    const dataAtual = new Date();
+
+    const data = startOfToday(dataAtual);
+
+    const znDate = zonedTimeToUtc(dataAtual, "Antarctica/Mawson");
+
+    return res.json({
+      dataAtual,
+      data,
+      znDate
+    });
+  }*/
 }
 
 export default new SumTransfers();

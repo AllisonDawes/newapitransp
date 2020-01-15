@@ -6,7 +6,6 @@ import CarWeightController from "./app/controllers/CarWeightController";
 import TransferController from "./app/controllers/TransferController";
 import ProgramationController from "./app/controllers/ProgramationController";
 import SumTransfers from "./app/controllers/SumTransfers";
-import CountTransfers from "./app/controllers/CountTransfers";
 
 import authMiddleware from "./app/middlewares/auth";
 
@@ -33,6 +32,6 @@ routes.get("/transfers", TransferController.index);
 routes.post("/transfers", TransferController.store);
 
 routes.get("/sumtransfers", SumTransfers.index);
-routes.get("/counttransfers", CountTransfers.index);
+//routes.post("/sumtransfers", SumTransfers.store);
 
 export default routes;
