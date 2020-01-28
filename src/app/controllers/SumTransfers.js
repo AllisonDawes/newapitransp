@@ -4,9 +4,11 @@ import { zonedTimeToUtc } from "date-fns-tz";
 
 class SumTransfers {
   async index(req, res) {
-    const znDate = zonedTimeToUtc(new Date(), "America/Fortaleza");
+    const znDate = zonedTimeToUtc(new Date(), "Antarctica/Mawson");
 
     const dayStart = startOfDay(znDate);
+
+    console.log(dayStart);
 
     const total = await TransferModel.findAll({
       where: { date: dayStart },
