@@ -1,186 +1,48 @@
 import TransferModel from "../models/Transfer";
 import User from "../models/User";
 import CarWeightModel from "../models/CarWeight";
-import { startOfDay } from "date-fns";
+import { startOfDay, parseISO } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
+import { Op } from "sequelize";
 
 class Transfer {
   async index(req, res) {
-    const { page = 1 } = req.query;
-    const { type_filter, filter } = req.body;
+    const { date } = req.params;
 
-    if (filter == null) {
-      const transferList = await TransferModel.findAndCountAll({
-        attributes: [
-          "id",
-          "user_id",
-          "carweight_id",
-          "mat_type",
-          "mat_origin",
-          "mat_dest",
-          "weight",
-          "comments",
-          "created_at",
-          "updated_at"
-        ],
-        order: [["id", "DESC"]],
-        limit: 20,
-        offset: (page - 1) * 20,
-        include: [
-          {
-            model: User,
-            as: "user",
-            attributes: ["username", "driver", "adm"]
-          },
-          {
-            model: CarWeightModel,
-            as: "carweight",
-            attributes: ["truck", "car_weight"]
-          }
-        ]
-      });
-      return res.json(transferList);
+    if (!date) {
+      return res.status(400).json({ error: "Data inválida" });
     }
 
-    if (type_filter == "tipo de material") {
-      const transferList = await TransferModel.findAndCountAll({
-        where: { mat_type: filter },
-        attributes: [
-          "id",
-          "user_id",
-          "carweight_id",
-          "mat_type",
-          "mat_origin",
-          "mat_dest",
-          "weight",
-          "comments",
-          "created_at",
-          "updated_at"
-        ],
-        order: [["id", "DESC"]],
-        limit: 20,
-        offset: (page - 1) * 20,
-        include: [
-          {
-            model: User,
-            as: "user",
-            attributes: ["username", "driver", "adm"]
-          },
-          {
-            model: CarWeightModel,
-            as: "carweight",
-            attributes: ["truck", "car_weight"]
-          }
-        ]
-      });
+    const transferList = await TransferModel.findAll({
+      where: { date: date },
+      attributes: [
+        "id",
+        "user_id",
+        "carweight_id",
+        "mat_type",
+        "mat_origin",
+        "mat_dest",
+        "weight",
+        "comments",
+        "created_at",
+        "updated_at"
+      ],
+      order: [["id", "DESC"]],
+      include: [
+        {
+          model: User,
+          as: "user",
+          attributes: ["username", "driver", "adm"]
+        },
+        {
+          model: CarWeightModel,
+          as: "carweight",
+          attributes: ["truck", "car_weight"]
+        }
+      ]
+    });
 
-      return res.json(transferList);
-    }
-
-    if (type_filter == "origem do material") {
-      const transferList = await TransferModel.findAndCountAll({
-        where: { mat_origin: filter },
-        attributes: [
-          "id",
-          "user_id",
-          "carweight_id",
-          "mat_type",
-          "mat_origin",
-          "mat_dest",
-          "weight",
-          "comments",
-          "created_at",
-          "updated_at"
-        ],
-        order: [["id", "DESC"]],
-        limit: 20,
-        offset: (page - 1) * 20,
-        include: [
-          {
-            model: User,
-            as: "user",
-            attributes: ["username", "driver", "adm"]
-          },
-          {
-            model: CarWeightModel,
-            as: "carweight",
-            attributes: ["truck", "car_weight"]
-          }
-        ]
-      });
-
-      return res.json(transferList);
-    }
-
-    if (type_filter == "destino do material") {
-      const transferList = await TransferModel.findAndCountAll({
-        where: { mat_dest: filter },
-        attributes: [
-          "id",
-          "user_id",
-          "carweight_id",
-          "mat_type",
-          "mat_origin",
-          "mat_dest",
-          "weight",
-          "comments",
-          "created_at",
-          "updated_at"
-        ],
-        order: [["id", "DESC"]],
-        limit: 20,
-        offset: (page - 1) * 20,
-        include: [
-          {
-            model: User,
-            as: "user",
-            attributes: ["username", "driver", "adm"]
-          },
-          {
-            model: CarWeightModel,
-            as: "carweight",
-            attributes: ["truck", "car_weight"]
-          }
-        ]
-      });
-
-      return res.json(transferList);
-    }
-
-    if (type_filter == "criacao do registro") {
-      const transferList = await TransferModel.findAndCountAll({
-        where: { created_at: filter },
-        attributes: [
-          "id",
-          "user_id",
-          "carweight_id",
-          "mat_type",
-          "mat_origin",
-          "mat_dest",
-          "weight",
-          "comments",
-          "created_at",
-          "updated_at"
-        ],
-        order: [["id", "DESC"]],
-        limit: 20,
-        offset: (page - 1) * 20,
-        include: [
-          {
-            model: User,
-            as: "user",
-            attributes: ["username", "driver", "adm"]
-          },
-          {
-            model: CarWeightModel,
-            as: "carweight",
-            attributes: ["truck", "car_weight"]
-          }
-        ]
-      });
-
-      return res.json(transferList);
-    }
+    return res.json(transferList);
   }
 
   async store(req, res) {

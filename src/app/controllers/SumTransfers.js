@@ -1,10 +1,12 @@
 import TransferModel from "../models/Transfer";
-import { startOfToday, startOfDay } from "date-fns";
+import { startOfDay } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 
 class SumTransfers {
   async index(req, res) {
-    const dayStart = startOfDay(new Date());
+    const znDate = zonedTimeToUtc(new Date(), "America/Fortaleza");
+
+    const dayStart = startOfDay(znDate);
 
     const total = await TransferModel.findAll({
       where: { date: dayStart },
@@ -19,20 +21,6 @@ class SumTransfers {
 
     return res.json(total);
   }
-
-  /*async store(req, res) {
-    const dataAtual = new Date();
-
-    const data = startOfToday(dataAtual);
-
-    const znDate = zonedTimeToUtc(dataAtual, "Antarctica/Mawson");
-
-    return res.json({
-      dataAtual,
-      data,
-      znDate
-    });
-  }*/
 }
 
 export default new SumTransfers();
