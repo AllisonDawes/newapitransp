@@ -6,6 +6,7 @@ import CarWeightController from "./app/controllers/CarWeightController";
 import TransferController from "./app/controllers/TransferController";
 import ProgramationController from "./app/controllers/ProgramationController";
 import SumTransfers from "./app/controllers/SumTransfers";
+import FeedController from "./app/controllers/FeedController";
 
 import authMiddleware from "./app/middlewares/auth";
 
@@ -32,5 +33,8 @@ routes.get("/transfers/:date", TransferController.index);
 routes.post("/transfers", TransferController.store);
 
 routes.get("/sumtransfers", SumTransfers.index);
+
+routes.post("/feeds", FeedController.store);
+routes.get("/feeds", FeedController.index);
 
 export default routes;

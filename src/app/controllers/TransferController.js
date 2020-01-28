@@ -1,9 +1,8 @@
 import TransferModel from "../models/Transfer";
 import User from "../models/User";
 import CarWeightModel from "../models/CarWeight";
-import { startOfDay, parseISO } from "date-fns";
+import { startOfDay } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
-import { Op } from "sequelize";
 
 class Transfer {
   async index(req, res) {
