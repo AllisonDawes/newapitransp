@@ -36,5 +36,6 @@ routes.get("/sumtransfers", SumTransfers.index);
 
 routes.post("/feeds", FeedController.store);
 routes.get("/feeds", FeedController.index);
+routes.delete("/feeds/:id", FeedController.delete);
 
 export default routes;

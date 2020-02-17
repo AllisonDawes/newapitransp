@@ -46,6 +46,30 @@ class FeedController {
 
     return res.json(newFeed);
   }
+
+  async delete(req, res) {
+    const id = parseInt(req.params.id);
+
+    const feed = await Feed.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: "user",
+          attributes: ["id", "username"]
+        }
+      ]
+    });
+
+    if (feed.user_id !== req.userId) {
+      return res
+        .status(401)
+        .json({ error: "Você não tem permissão para deletar esse registro!" });
+    }
+
+    await feed.destroy(id);
+
+    return res.json();
+  }
 }
 
 export default new FeedController();
