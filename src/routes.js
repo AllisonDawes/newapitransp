@@ -31,6 +31,7 @@ routes.put("/carweight/:id", CarWeightController.update);
 
 routes.get("/transfers/:date", TransferController.index);
 routes.post("/transfers", TransferController.store);
+routes.delete("/transfers/:id", TransferController.delete);
 
 routes.get("/sumtransfers", SumTransfers.index);
 

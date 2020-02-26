@@ -1,7 +1,7 @@
 import TransferModel from "../models/Transfer";
 import User from "../models/User";
 import CarWeightModel from "../models/CarWeight";
-import { startOfDay } from "date-fns";
+import { startOfDay, format } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 
 class Transfer {
@@ -79,6 +79,28 @@ class Transfer {
     });
 
     return res.json(transfer);
+  }
+
+  async delete(req, res) {
+    const id = parseInt(req.params.id);
+
+    const info = await TransferModel.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: "user",
+          attributes: ["username", "driver", "adm"]
+        }
+      ]
+    });
+
+    if (info.user_id !== req.userId) {
+      return res.status(401).json({ error: "Usuário não autorizado!" });
+    }
+
+    await info.destroy(id);
+
+    return res.json();
   }
 }
 
