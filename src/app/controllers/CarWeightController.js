@@ -51,7 +51,7 @@ class CarWeight {
 
     if (!checkUser.driver) {
       return res.status(401).json({
-        error: "Usuário não autorizado! Procure o administraidor"
+        error: "Usuário não autorizado! Procure o administrador"
       });
     }
 

@@ -11,6 +11,7 @@ class UserController {
         "username",
         "driver",
         "adm",
+        "canceled",
         "created_at",
         "updated_at"
       ],
@@ -23,7 +24,17 @@ class UserController {
   }
 
   async show(req, res) {
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(req.params.id, {
+      attributes: [
+        "id",
+        "username",
+        "driver",
+        "adm",
+        "canceled",
+        "created_at",
+        "updated_at"
+      ]
+    });
 
     return res.json(user);
   }

@@ -9,7 +9,8 @@ class User extends Model {
         password: Sequelize.VIRTUAL,
         password_hash: Sequelize.STRING,
         driver: Sequelize.BOOLEAN,
-        adm: Sequelize.BOOLEAN
+        adm: Sequelize.BOOLEAN,
+        canceled: Sequelize.BOOLEAN
       },
       {
         sequelize

@@ -10,6 +10,8 @@ import TransferController from "./app/controllers/TransferController";
 import ProgramationController from "./app/controllers/ProgramationController";
 import SumTransfers from "./app/controllers/SumTransfers";
 import FeedController from "./app/controllers/FeedController";
+import PermissionController from "./app/controllers/PermissionController";
+import CanceledController from "./app/controllers/CanceledController";
 
 import authMiddleware from "./app/middlewares/auth";
 
@@ -48,5 +50,9 @@ routes.get("/sumtransfers", SumTransfers.index);
 routes.post("/feeds", FeedController.store);
 routes.get("/feeds", FeedController.index);
 routes.delete("/feeds/:id", FeedController.delete);
+
+routes.put("/users/permission/:id", PermissionController.update);
+
+routes.put("/canceleds/:id", CanceledController.update);
 
 export default routes;
