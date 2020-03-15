@@ -67,6 +67,13 @@ class Transfer {
       });
     }
 
+    if (carweight.user_id !== req.userId) {
+      return res.status(401).json({
+        error:
+          "Você não pode registrar pesagens, antes de atualizar o peso do carro!"
+      });
+    }
+
     const transfer = await TransferModel.create({
       user_id: req.userId,
       carweight_id: carweight.id,

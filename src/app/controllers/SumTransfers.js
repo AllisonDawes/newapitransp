@@ -8,8 +8,6 @@ class SumTransfers {
 
     const dayStart = startOfDay(znDate);
 
-    console.log(dayStart);
-
     const total = await TransferModel.findAll({
       where: { date: dayStart },
       attributes: ["weight"]
