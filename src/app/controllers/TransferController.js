@@ -1,7 +1,7 @@
 import TransferModel from "../models/Transfer";
 import User from "../models/User";
 import CarWeightModel from "../models/CarWeight";
-import { startOfDay, format } from "date-fns";
+import { startOfDay } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 
 class Transfer {
@@ -18,6 +18,8 @@ class Transfer {
         "id",
         "user_id",
         "carweight_id",
+        "weight_brute",
+        "car_weight",
         "mat_type",
         "mat_origin",
         "mat_dest",
@@ -45,7 +47,7 @@ class Transfer {
   }
 
   async store(req, res) {
-    const { mat_type, mat_origin, mat_dest, weight, comments } = req.body;
+    const { weight_brute, mat_type, mat_origin, mat_dest, comments } = req.body;
 
     const tzStartDay = zonedTimeToUtc(new Date(), "Antarctica/Mawson");
 
@@ -74,14 +76,18 @@ class Transfer {
       });
     }
 
+    const net_weight = weight_brute - carweight.car_weight;
+
     const transfer = await TransferModel.create({
       user_id: req.userId,
       carweight_id: carweight.id,
+      weight_brute,
+      car_weight: carweight.car_weight,
       date: startDay,
       mat_type,
       mat_origin,
       mat_dest,
-      weight,
+      weight: net_weight,
       comments
     });
 

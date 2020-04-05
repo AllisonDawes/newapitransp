@@ -6,6 +6,8 @@ class Transfer extends Model {
       {
         user_id: Sequelize.INTEGER,
         carweight_id: Sequelize.INTEGER,
+        weight_brute: Sequelize.FLOAT,
+        car_weight: Sequelize.FLOAT,
         date: Sequelize.DATE,
         mat_type: Sequelize.STRING,
         mat_origin: Sequelize.STRING,

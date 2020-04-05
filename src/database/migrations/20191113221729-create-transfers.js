@@ -31,6 +31,16 @@ module.exports = {
         allowNull: true
       },
 
+      weight_brute: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+      },
+
+      car_weight: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+      },
+
       mat_type: {
         type: Sequelize.STRING,
         allowNull: false
