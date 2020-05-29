@@ -12,6 +12,7 @@ import SumTransfers from "./app/controllers/SumTransfers";
 import FeedController from "./app/controllers/FeedController";
 import PermissionController from "./app/controllers/PermissionController";
 import CanceledController from "./app/controllers/CanceledController";
+//import FilterTransferController from "./app/controllers/FilterTransferController";
 
 import authMiddleware from "./app/middlewares/auth";
 
@@ -19,7 +20,7 @@ const routes = new Router();
 
 const BruteStore = new BruteRedis({
   host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT
+  port: process.env.REDIS_PORT,
 });
 
 const bruteForce = new Brute(BruteStore);
@@ -43,6 +44,7 @@ routes.put("/carweight/:id", CarWeightController.update);
 
 routes.get("/transfers/:date", TransferController.index);
 routes.post("/transfers", TransferController.store);
+routes.put("/transfers/:id", TransferController.update);
 routes.delete("/transfers/:id", TransferController.delete);
 
 routes.get("/sumtransfers", SumTransfers.index);
@@ -54,5 +56,7 @@ routes.delete("/feeds/:id", FeedController.delete);
 routes.put("/users/permission/:id", PermissionController.update);
 
 routes.put("/canceleds/:id", CanceledController.update);
+
+//routes.get("/filterstransfers/:date", FilterTransferController.index);
 
 export default routes;

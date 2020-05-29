@@ -26,21 +26,21 @@ class Transfer {
         "weight",
         "comments",
         "created_at",
-        "updated_at"
+        "updated_at",
       ],
       order: [["id", "DESC"]],
       include: [
         {
           model: User,
           as: "user",
-          attributes: ["username", "driver", "adm"]
+          attributes: ["username", "driver", "adm"],
         },
         {
           model: CarWeightModel,
           as: "carweight",
-          attributes: ["truck", "car_weight"]
-        }
-      ]
+          attributes: ["truck", "car_weight"],
+        },
+      ],
     });
 
     return res.json(transferList);
@@ -57,7 +57,7 @@ class Transfer {
 
     if (!checkUser.driver) {
       return res.status(401).json({
-        error: "Usuário não autorizado! Procure o administrador."
+        error: "Usuário não autorizado! Procure o administrador.",
       });
     }
 
@@ -65,14 +65,14 @@ class Transfer {
 
     if (!carweight) {
       return res.status(401).json({
-        erro: "Cadastre antes o caminhão e o peso do mesmo para continuar!"
+        erro: "Cadastre antes o caminhão e o peso do mesmo para continuar!",
       });
     }
 
     if (carweight.user_id !== req.userId) {
       return res.status(401).json({
         error:
-          "Você não pode registrar pesagens, antes de atualizar o peso do carro!"
+          "Você não pode registrar pesagens, antes de atualizar o peso do carro!",
       });
     }
 
@@ -88,7 +88,29 @@ class Transfer {
       mat_origin,
       mat_dest,
       weight: net_weight,
-      comments
+      comments,
+    });
+
+    return res.json(transfer);
+  }
+
+  async update(req, res) {
+    const id = parseInt(req.params.id);
+    const { weight_brute } = req.body;
+
+    const transfer = await TransferModel.findByPk(id);
+
+    const userAdmin = await User.findByPk(req.userId);
+
+    if (!userAdmin) {
+      return res.status(400).json({ error: "Usuário não permitido." });
+    }
+
+    const weight_neto = weight_brute - transfer.car_weight;
+
+    await transfer.update({
+      weight_brute,
+      weight: weight_neto,
     });
 
     return res.json(transfer);
@@ -102,9 +124,9 @@ class Transfer {
         {
           model: User,
           as: "user",
-          attributes: ["username", "driver", "adm"]
-        }
-      ]
+          attributes: ["username", "driver", "adm"],
+        },
+      ],
     });
 
     if (info.user_id !== req.userId) {
