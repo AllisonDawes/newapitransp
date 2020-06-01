@@ -116,7 +116,7 @@ class Transfer {
 
     await transfer.update({
       date: startDay,
-      car_weight,
+      car_weight: car_weight,
       weight: weight_neto,
     });
 
