@@ -100,7 +100,7 @@ class Transfer {
 
   async update(req, res) {
     const id = parseInt(req.params.id);
-    const { date, car_weight } = req.body;
+    const { date, car_weight, weight_brute } = req.body;
 
     const startDay = startOfDay(parseISO(date));
 
@@ -112,11 +112,12 @@ class Transfer {
       return res.status(400).json({ error: "Usuário não permitido." });
     }
 
-    //const weight_neto = weight_brute - transfer.car_weight;
+    const weight_neto = weight_brute - car_weight;
 
     await transfer.update({
       date: startDay,
       car_weight,
+      weight: weight_neto,
     });
 
     return res.json(transfer);
