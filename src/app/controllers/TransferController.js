@@ -1,7 +1,7 @@
 import TransferModel from "../models/Transfer";
 import User from "../models/User";
 import CarWeightModel from "../models/CarWeight";
-import { startOfDay } from "date-fns";
+import { startOfDay, parseISO } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 
 class Transfer {
@@ -100,7 +100,9 @@ class Transfer {
 
   async update(req, res) {
     const id = parseInt(req.params.id);
-    const { weight_brute } = req.body;
+    const { date, car_weight } = req.body;
+
+    const startDay = startOfDay(parseISO(date));
 
     const transfer = await TransferModel.findByPk(id);
 
@@ -110,11 +112,11 @@ class Transfer {
       return res.status(400).json({ error: "Usuário não permitido." });
     }
 
-    const weight_neto = weight_brute - transfer.car_weight;
+    //const weight_neto = weight_brute - transfer.car_weight;
 
     await transfer.update({
-      weight_brute,
-      weight: weight_neto,
+      date: startDay,
+      car_weight,
     });
 
     return res.json(transfer);
