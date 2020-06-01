@@ -50,7 +50,7 @@ class Transfer {
   async store(req, res) {
     const { weight_brute, mat_type, mat_origin, mat_dest, comments } = req.body;
 
-    const tzStartDay = zonedTimeToUtc(new Date(), "Antarctica/Mawson");
+    const tzStartDay = zonedTimeToUtc(new Date(), "Asia/Bangkok");
 
     const startDay = startOfDay(tzStartDay);
 
