@@ -80,6 +80,7 @@ class Transfer {
     const net_weight = weight_brute - carweight.car_weight;
 
     console.log(startDay);
+    console.log(tzStartDay);
 
     const transfer = await TransferModel.create({
       user_id: req.userId,
