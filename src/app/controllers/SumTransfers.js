@@ -4,7 +4,7 @@ import { zonedTimeToUtc } from "date-fns-tz";
 
 class SumTransfers {
   async index(req, res) {
-    const znDate = zonedTimeToUtc(new Date(), "Asia/Bangkok");
+    const znDate = zonedTimeToUtc(new Date(), "Australia/Melbourne");
 
     const dayStart = startOfDay(znDate);
 
