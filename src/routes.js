@@ -1,7 +1,7 @@
 import "dotenv/config";
 import Router from "express";
-import BruteRedis from "express-brute-redis";
-import Brute from "express-brute";
+//import BruteRedis from "express-brute-redis";
+//import Brute from "express-brute";
 
 import UserController from "./app/controllers/UserController";
 import SessionController from "./app/controllers/SessionController";
@@ -18,15 +18,15 @@ import authMiddleware from "./app/middlewares/auth";
 
 const routes = new Router();
 
-const BruteStore = new BruteRedis({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
-});
-
-const bruteForce = new Brute(BruteStore);
+//const BruteStore = new BruteRedis({
+//  host: process.env.REDIS_HOST,
+//  port: process.env.REDIS_PORT,
+//});
+//
+//const bruteForce = new Brute(BruteStore);
 
 routes.post("/users", UserController.store);
-routes.post("/session", bruteForce.prevent, SessionController.store);
+routes.post("/session", /*bruteForce.prevent,*/ SessionController.store);
 
 routes.use(authMiddleware);
 

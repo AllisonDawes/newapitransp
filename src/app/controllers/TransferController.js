@@ -1,8 +1,10 @@
+import { startOfDay, parseISO } from "date-fns";
+import { zonedTimeToUtc } from "date-fns-tz";
+import * as Yup from "yup";
+
 import TransferModel from "../models/Transfer";
 import User from "../models/User";
 import CarWeightModel from "../models/CarWeight";
-import { startOfDay, parseISO } from "date-fns";
-import { zonedTimeToUtc } from "date-fns-tz";
 
 class Transfer {
   async index(req, res) {
@@ -48,6 +50,18 @@ class Transfer {
   }
 
   async store(req, res) {
+    const schema = Yup.object().shape({
+      weight_brute: Yup.string()
+        .required("Informe o peso bruto da carrada")
+        .min(5),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res
+        .status(400)
+        .json({ error: "As validações de cadastro falharam." });
+    }
+
     const { weight_brute, mat_type, mat_origin, mat_dest, comments } = req.body;
 
     const tzStartDay = zonedTimeToUtc(new Date(), "Australia/Melbourne");
