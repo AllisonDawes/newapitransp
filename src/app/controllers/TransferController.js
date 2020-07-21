@@ -1,4 +1,4 @@
-import { startOfDay, parseISO } from "date-fns";
+import { startOfDay, parseISO, isAfter } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 import * as Yup from "yup";
 
@@ -119,7 +119,7 @@ class Transfer {
 
     const userAdmin = await User.findByPk(req.userId);
 
-    if (!userAdmin) {
+    if (!userAdmin.adm) {
       return res.status(400).json({ error: "Usuário não permitido." });
     }
 
@@ -127,6 +127,7 @@ class Transfer {
 
     await transfer.update({
       date: startDay,
+      weight_brute,
       car_weight: car_weight,
       weight: weight_neto,
     });
@@ -136,6 +137,10 @@ class Transfer {
 
   async delete(req, res) {
     const id = parseInt(req.params.id);
+
+    const today = startOfDay(new Date());
+
+    const userLoged = await User.findByPk(req.userId);
 
     const info = await TransferModel.findByPk(id, {
       include: [
@@ -147,8 +152,20 @@ class Transfer {
       ],
     });
 
-    if (info.user_id !== req.userId) {
-      return res.status(401).json({ error: "Usuário não autorizado!" });
+    if (!userLoged.adm) {
+      if (info.user_id !== req.userId) {
+        return res.status(401).json({ error: "Usuário não autorizado!" });
+      }
+
+      if (isAfter(today, info.date)) {
+        return res
+          .status(401)
+          .json({ error: "Usuário não pode mais deleter o registro!" });
+      }
+
+      return res
+        .status(401)
+        .json({ error: "Usuário não tem permissão de Administrador!" });
     }
 
     await info.destroy(id);
