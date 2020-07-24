@@ -97,6 +97,7 @@ class Transfer {
       user_id: req.userId,
       carweight_id: carweight.id,
       weight_brute,
+      truck: carweight.truck,
       car_weight: carweight.car_weight,
       date: startDay,
       mat_type,
@@ -162,10 +163,6 @@ class Transfer {
           .status(401)
           .json({ error: "Usuário não pode mais deleter o registro!" });
       }
-
-      return res
-        .status(401)
-        .json({ error: "Usuário não tem permissão de Administrador!" });
     }
 
     await info.destroy(id);
