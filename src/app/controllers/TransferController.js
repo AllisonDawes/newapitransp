@@ -21,6 +21,7 @@ class Transfer {
         "user_id",
         "carweight_id",
         "weight_brute",
+        "truck",
         "car_weight",
         "date",
         "mat_type",
