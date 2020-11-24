@@ -65,7 +65,7 @@ class Transfer {
 
     const { weight_brute, mat_type, mat_origin, mat_dest, comments } = req.body;
 
-    const tzStartDay = zonedTimeToUtc(new Date(), "Australia/Melbourne");
+    const tzStartDay = zonedTimeToUtc(new Date(), "Asia/Tokyo");
 
     const startDay = startOfDay(tzStartDay);
 
