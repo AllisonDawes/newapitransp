@@ -8,6 +8,7 @@ class SumTransfers {
 
     const dayStart = startOfDay(znDate);
 
+    console.log(znDate);
     console.log(dayStart);
 
     const total = await TransferModel.findAll({
