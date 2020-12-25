@@ -13,9 +13,9 @@ class SessionController {
       return res.status(401).json({ error: "Usuário não existe." });
     }
 
-    if (!(await user.checkPassword(password))) {
-      return res.status(401).json({ error: "Senha incorreta!" });
-    }
+    //if (!(await user.checkPassword(password))) {
+    //  return res.status(401).json({ error: "Senha incorreta!" });
+    //}
 
     const { id, driver, adm } = user;
 
@@ -24,11 +24,11 @@ class SessionController {
         id,
         username,
         driver,
-        adm
+        adm,
       },
       token: jwt.sign({ id }, authConfig.secret, {
-        expiresIn: authConfig.expiresIn
-      })
+        expiresIn: authConfig.expiresIn,
+      }),
     });
   }
 }
