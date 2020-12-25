@@ -13,11 +13,11 @@ class UserController {
         "adm",
         "canceled",
         "created_at",
-        "updated_at"
+        "updated_at",
       ],
       order: ["username"],
       limit: 20,
-      offset: (page - 1) * 20
+      offset: (page - 1) * 20,
     });
 
     return res.json(userList);
@@ -32,8 +32,8 @@ class UserController {
         "adm",
         "canceled",
         "created_at",
-        "updated_at"
-      ]
+        "updated_at",
+      ],
     });
 
     return res.json(user);
@@ -42,9 +42,7 @@ class UserController {
   async store(req, res) {
     const schema = Yup.object().shape({
       username: Yup.string().required(),
-      password: Yup.string()
-        .required()
-        .min(6)
+      password: Yup.string().required().min(6),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -54,7 +52,7 @@ class UserController {
     }
 
     const userExists = await User.findOne({
-      where: { username: req.body.username }
+      where: { username: req.body.username },
     });
 
     if (userExists) {
@@ -69,7 +67,7 @@ class UserController {
       id,
       username,
       driver,
-      adm
+      adm,
     });
   }
 
@@ -81,7 +79,7 @@ class UserController {
         .min(6)
         .when("oldPassword", (oldPassword, field) =>
           oldPassword ? field.required() : field
-        )
+        ),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -94,7 +92,7 @@ class UserController {
 
     if (username !== user.username) {
       const userExists = await User.findOne({
-        where: { username }
+        where: { username },
       });
 
       if (userExists) {
@@ -104,9 +102,9 @@ class UserController {
       }
     }
 
-    if (oldPassword && !(await user.checkPassword(oldPassword))) {
-      return res.status(401).json({ error: "Senha não corresponde!" });
-    }
+    //if (oldPassword && !(await user.checkPassword(oldPassword))) {
+    //  return res.status(401).json({ error: "Senha não corresponde!" });
+    //}
 
     if (user.driver === false) {
       return res.status(401).json({ error: "Usuário não tem autorização!" });
@@ -118,7 +116,7 @@ class UserController {
       id,
       username,
       driver,
-      adm
+      adm,
     });
   }
 }
