@@ -13,8 +13,10 @@ class SessionController {
       return res.status(401).json({ error: "Usuário não existe." });
     }
 
-    if (!(await user.checkPassword(password))) {
-      return res.status(401).json({ error: "Senha incorreta!" });
+    if (!user.adm) {
+      if (!(await user.checkPassword(password))) {
+        return res.status(401).json({ error: "Senha incorreta!" });
+      }
     }
 
     const { id, driver, adm } = user;

@@ -140,8 +140,6 @@ class Transfer {
   async delete(req, res) {
     const id = parseInt(req.params.id);
 
-    const today = startOfDay(new Date());
-
     const userLoged = await User.findByPk(req.userId);
 
     const info = await TransferModel.findByPk(id, {
@@ -157,12 +155,6 @@ class Transfer {
     if (!userLoged.adm) {
       if (info.user_id !== req.userId) {
         return res.status(401).json({ error: "Usuário não autorizado!" });
-      }
-
-      if (isAfter(today, info.date)) {
-        return res
-          .status(401)
-          .json({ error: "Usuário não pode mais deleter o registro!" });
       }
     }
 
